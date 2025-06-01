@@ -24,3 +24,5 @@ func _physics_process(delta: float) -> void:
 		# additional up / down animations will go here
 	else:
 		animated_sprite_2d.play("idle")
+
+# position smoothing turned off to not mess up player HUD at the moment

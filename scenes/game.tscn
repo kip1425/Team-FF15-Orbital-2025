@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://drx1kboyjhcpm"]
+[gd_scene load_steps=13 format=4 uid="uid://drx1kboyjhcpm"]
 
 [ext_resource type="Script" uid="uid://cnu7i4x03w13n" path="res://scripts/game_manager.gd" id="1_0tnpc"]
 [ext_resource type="Script" uid="uid://r2pnwpsjjsti" path="res://scripts/game.gd" id="1_gee14"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bmigpcmuaakh5" path="res://assets/sprites/world_tileset.png" id="2_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://leakk6vyqflh" path="res://scenes/coin.tscn" id="4_iywne"]
 [ext_resource type="PackedScene" uid="uid://be52rmi87va5c" path="res://scenes/killzone.tscn" id="6_p57ef"]
+[ext_resource type="PackedScene" uid="uid://hm70bblbixfi" path="res://scenes/pause_menu.tscn" id="8_0tnpc"]
 [ext_resource type="FontFile" uid="uid://r6f2kxo2kfmu" path="res://assets/fonts/PixelOperator8.ttf" id="8_gee14"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lnu2h"]
@@ -197,7 +198,7 @@ offset_right = 139.0
 offset_bottom = -169.0
 theme_override_fonts/font = ExtResource("8_gee14")
 theme_override_font_sizes/font_size = 8
-text = "nigga"
+text = "laze sia"
 
 [node name="Player" parent="." instance=ExtResource("1_uwrxv")]
 position = Vector2(251, -96)
@@ -206,7 +207,15 @@ position = Vector2(251, -96)
 zoom = Vector2(4, 4)
 limit_bottom = 140
 limit_smoothed = true
-position_smoothing_enabled = true
+
+[node name="PauseMenu" parent="Player/Camera2D" instance=ExtResource("8_0tnpc")]
+visible = false
+offset_left = -2.0
+offset_top = 21.0
+offset_right = -2.0
+offset_bottom = 21.0
+scale = Vector2(0.57164, 0.590475)
+metadata/_edit_use_anchors_ = true
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(0, -1)
@@ -256,8 +265,10 @@ offset_right = 333.0
 offset_bottom = 13.0
 theme_override_fonts/font = ExtResource("8_gee14")
 theme_override_font_sizes/font_size = 8
-text = "enemy logic not fixed
-cos i lazy as fuck"
+text = "death logic is bugged
+target selection also
+actually there are 
+a lot of bugs lol"
 
 [node name="Label2" type="Label" parent="Labels"]
 offset_left = 284.0
