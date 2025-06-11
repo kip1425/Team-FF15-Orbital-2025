@@ -188,4 +188,4 @@ position = Vector2(0, -5)
 shape = SubResource("CircleShape2D_fjrip")
 
 [node name="Gun" parent="." instance=ExtResource("3_qhqgy")]
-position = Vector2(8, -12)
+position = Vector2(0, -9)

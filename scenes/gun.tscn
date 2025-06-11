@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://db0xux3hnqdtv"]
+[gd_scene load_steps=6 format=3 uid="uid://db0xux3hnqdtv"]
 
 [ext_resource type="Script" uid="uid://2u6awkklu7y7" path="res://scripts/gun.gd" id="1_og67c"]
 [ext_resource type="Texture2D" uid="uid://cswb5do8rrj7q" path="res://assets/pistol/pistol.png" id="1_x77fm"]
 [ext_resource type="PackedScene" uid="uid://bq88whmieokpp" path="res://scenes/bullet.tscn" id="3_gp1hk"]
+[ext_resource type="AudioStream" uid="uid://no1l61y11ss7" path="res://assets/sounds/hurt.wav" id="4_qd4js"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_og67c"]
 radius = 78.0
@@ -32,5 +33,9 @@ position = Vector2(29, -3)
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.3
 autostart = true
+
+[node name="ShootSFX" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("4_qd4js")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

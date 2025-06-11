@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://bi247clrlagmu"]
+
+[ext_resource type="Texture2D" uid="uid://dkmebnc7mmp5o" path="res://assets/healthbarUnder.png" id="1_sk4pr"]
+[ext_resource type="Texture2D" uid="uid://c8ppt1mrxfhbb" path="res://assets/healthbarProgress.png" id="2_48xfa"]
+[ext_resource type="Script" uid="uid://cr8shhuamivb1" path="res://scripts/health_bar.gd" id="3_8isll"]
+[ext_resource type="Texture2D" uid="uid://cxcm7t65o2yov" path="res://assets/sprites/profpic.png" id="3_48xfa"]
+
+[node name="PlayerUI" type="CanvasLayer"]
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_left = 130.0
+offset_top = 75.0
+offset_right = 194.0
+offset_bottom = 85.0
+scale = Vector2(4.41773, 3.35729)
+texture_under = ExtResource("1_sk4pr")
+texture_progress = ExtResource("2_48xfa")
+script = ExtResource("3_8isll")
+
+[node name="Profpic" type="Sprite2D" parent="."]
+position = Vector2(72, 71)
+scale = Vector2(0.615079, 0.615079)
+texture = ExtResource("3_48xfa")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 137.0
+offset_top = 41.0
+offset_right = 339.0
+offset_bottom = 64.0
+text = "Anoop (Your player name)"

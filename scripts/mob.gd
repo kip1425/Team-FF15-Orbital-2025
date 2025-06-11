@@ -21,19 +21,13 @@ func _physics_process(delta: float) -> void:
 
 func take_damage():
 	health -= 1
-	animated_sprite.play("take_damage")
+	# animated_sprite.play("take_damage")
 	# take damage animation here to be improved on
 
 	if health == 0:
 		queue_free()
 		
 		# fix enemy death animation later
-		
-		#const SMOKE_SCENE = preload("res://assets/smoke_explosion/smoke_explosion.tscn")
-		#var smoke = SMOKE_SCENE.instantiate() 
-		
-		# smoke added as sibling node to mob
-		#get_parent().add_child(smoke)
-		#smoke.global_position = global_position
+
 	
 	

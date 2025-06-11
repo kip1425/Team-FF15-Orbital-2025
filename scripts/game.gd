@@ -1,11 +1,10 @@
 extends Node2D
 
+var ENEMY_NUMBER = 6
+
 func _ready() -> void:
-	spawn_mob()
-	spawn_mob()
-	spawn_mob()
-	spawn_mob()
-	spawn_mob()
+	for i in range(ENEMY_NUMBER):
+		spawn_mob()	
 	
 @onready var pause_menu = $Player/Camera2D/PauseMenu
 var paused = false
