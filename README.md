@@ -1,4 +1,4 @@
-Codepocalypse V1.1 (MS1)
+Codepocalypse V2.1 (MS2)
 
 Current features:
 - Basic player movement & animation
