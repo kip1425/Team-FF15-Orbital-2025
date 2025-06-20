@@ -9,14 +9,17 @@ Current features:
 - Basic UI
 - Basic SFX (Collectibles, BGM)
 
-To be implemented next (Important) :
-- Basic Player UI (health bar, collectibles)
-- Player health bar logic 
-- Enemy / Player health bar logic
-- Fix target selection (nearest enemy), SFX for shooting
-- Add mob death animations
+To be implemented by MS2:
+High Priority:
+- More mob types (Sern Yuan) - currently has melee and ranged mobs only
+- More weapon types (Shu Xian)
+- Add overall game structure (Campaign, Waves, Timer, etc.)
 
-Bugs:
-- Random projectile spawns at the bottom left of the map
-- Player 'clips' through terrain upon death sometimes, to fix death logic
+Low Priority:
+- Add mob death animations
+- Make settings menu
+- Coin / Score counter in player UI
+- Player take damage / death animations + SFX
+- Player roll movement mechanic ?
+
 
