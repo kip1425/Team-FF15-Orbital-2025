@@ -84,7 +84,7 @@ script = ExtResource("1_d4cuo")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_71rcx")
-animation = &"take_damage"
+animation = &"idle_walk"
 autoplay = "idle_walk"
 
 [node name="Killzone" parent="." instance=ExtResource("2_d4cuo")]

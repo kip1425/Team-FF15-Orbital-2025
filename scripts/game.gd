@@ -1,10 +1,12 @@
 extends Node2D
 
-var ENEMY_NUMBER = 6
+var ENEMY_NUMBER = 5
 
 func _ready() -> void:
 	for i in range(ENEMY_NUMBER):
-		spawn_mob()	
+		spawn_ranged_mob()
+		spawn_mob()
+		spawn_mob()
 	
 @onready var pause_menu = $Player/Camera2D/PauseMenu
 var paused = false
@@ -12,6 +14,12 @@ var paused = false
 # Called when the node enters the scene tree for the first time.
 func spawn_mob():
 	var new_mob = preload("res://scenes/mob.tscn").instantiate()
+	%PathFollow2D.progress_ratio = randf()
+	new_mob.global_position = %PathFollow2D.global_position
+	add_child(new_mob)
+	
+func spawn_ranged_mob():
+	var new_mob = preload("res://scenes/ranged_mob.tscn").instantiate()
 	%PathFollow2D.progress_ratio = randf()
 	new_mob.global_position = %PathFollow2D.global_position
 	add_child(new_mob)

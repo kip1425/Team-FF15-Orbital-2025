@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://uwimhggsryic"]
+
+[ext_resource type="Script" uid="uid://bhbp4c2lr2fud" path="res://scripts/enemy_projectile.gd" id="1_e8ik0"]
+[ext_resource type="Texture2D" uid="uid://bb3frps6jcjnp" path="res://assets/pistol/mob_projectile.png" id="2_j7vux"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_y25gk"]
+radius = 3.0
+
+[node name="EnemyBullet" type="Area2D"]
+top_level = true
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_e8ik0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+top_level = true
+shape = SubResource("CircleShape2D_y25gk")
+
+[node name="MobProjectile" type="Sprite2D" parent="."]
+position = Vector2(-2, 0)
+scale = Vector2(0.191875, 0.196429)
+texture = ExtResource("2_j7vux")
