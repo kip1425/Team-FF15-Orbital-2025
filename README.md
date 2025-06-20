@@ -10,6 +10,7 @@ Current features:
 - Basic SFX (Collectibles, BGM)
 
 To be implemented by MS2:
+
 High Priority:
 - More mob types (Sern Yuan) - currently has melee and ranged mobs only
 - More weapon types (Shu Xian)
