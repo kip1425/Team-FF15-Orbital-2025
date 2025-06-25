@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 var health = 3
 var is_hurt = false
-const SPEED = 75.0
+var SPEED = 75.0
 @onready var player = get_node("/root/Game/Player")
 @onready var animated_sprite = $AnimatedSprite2D
 
@@ -20,14 +20,16 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func take_damage():
-	health -= 1
+	health -= 1	
 	# animated_sprite.play("take_damage")
 	# take damage animation here to be improved on
 
 	if health == 0:
-		queue_free()
-		
+		die()
 		# fix enemy death animation later
+
+func die():
+	queue_free()
 
 	
 	
