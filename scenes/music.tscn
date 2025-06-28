@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://cbwrl2td6sc6x"]
+[gd_scene load_steps=3 format=3 uid="uid://cbwrl2td6sc6x"]
 
 [ext_resource type="AudioStream" uid="uid://cg7olwso2dymo" path="res://assets/music/edm003-retro-edm.mp3" id="1_05ggv"]
+[ext_resource type="Script" uid="uid://bx8surem16ibk" path="res://scripts/music.gd" id="2_ibx2e"]
 
 [node name="Music" type="AudioStreamPlayer2D"]
 stream = ExtResource("1_05ggv")
 autoplay = true
 bus = &"Music"
+script = ExtResource("2_ibx2e")

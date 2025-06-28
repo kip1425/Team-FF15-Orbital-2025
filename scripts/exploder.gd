@@ -16,6 +16,7 @@ func _ready():
 	SPEED = 180
 	explosion_area.monitoring = false
 	sprite.modulate = Color(1, 1, 1)
+	super._ready()
 	
 func _physics_process(delta):
 	if is_winding_up or not is_instance_valid(player):
@@ -63,4 +64,8 @@ func _on_flash_timer_timeout() -> void:
 		flash_timer.start(0.1)
 
 func _on_explode_timer_timeout() -> void:
-	queue_free() # Replace with function body.
+	die() # Replace with function body.
+
+func die():
+	queue_free()
+	

@@ -11,6 +11,7 @@ func _ready():
 	shoot_timer.wait_time = shoot_cooldown
 	shoot_timer.timeout.connect(_on_timer_timeout)
 	shoot_timer.start()
+	super._ready()
 
 func _physics_process(delta: float) -> void:
 	if is_hurt:
@@ -42,3 +43,5 @@ func _on_timer_timeout() -> void:
 	bullet.init(dir)
 	get_tree().current_scene.add_child(bullet)
 	
+func die():
+	super.die()

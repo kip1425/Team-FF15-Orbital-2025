@@ -6,6 +6,9 @@ var SPEED = 75.0
 @onready var player = get_node("/root/Game/Player")
 @onready var animated_sprite = $AnimatedSprite2D
 
+func _ready():
+	add_to_group("enemies")
+
 func _physics_process(delta: float) -> void:
 	if is_hurt:
 		move_and_slide()

@@ -6,9 +6,9 @@ extends "res://scripts/mob.gd"
 ]
 func _ready():
 	health = 8
+	super._ready()
 # overrides die from parent class mob btw
 func die():
-	print("splitter died")
 	var spawn_count = randi_range(2, 4)
 	
 	for i in range(spawn_count):
