@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://dacojjonmog7k"]
+
+[ext_resource type="Script" uid="uid://clx2murd124mg" path="res://scripts/loot/experience_coin.gd" id="1_betor"]
+[ext_resource type="SpriteFrames" uid="uid://cgpioy21kgny0" path="res://assets/loot/silver_coin.tres" id="2_pv5js"]
+[ext_resource type="AudioStream" uid="uid://dw713dj2qqqt1" path="res://assets/sounds/coin.wav" id="3_iob5p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pv5js"]
+size = Vector2(18, 19)
+
+[node name="ExperienceCoin" type="Area2D" groups=["loot"]]
+collision_layer = 8
+collision_mask = 8
+script = ExtResource("1_betor")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_pv5js")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_pv5js")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_iob5p")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="finished" from="Sound" to="." method="_on_sound_finished"]

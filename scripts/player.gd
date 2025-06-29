@@ -16,18 +16,32 @@ var roll_cooldown_timer = 0.0
 
 var facing_direction: Vector2 = Vector2.RIGHT
 
+# Variable for zigzag motion of brute_force_attack
+var last_movement = Vector2.UP
+
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var health_bar = $"../PlayerUI/HealthBar" # i think correct path
+@onready var experience_bar = $"../PlayerUI/ExperienceBar"
+@onready var experience_label = $"../PlayerUI/ExperienceLabel"
 @onready var roll_sound_player: AudioStreamPlayer2D = $RollSoundPlayer
 @onready var take_dmg_sound_player: AudioStreamPlayer2D = $TakeDamageSound
 
 func _ready() -> void:
 	add_to_group("player")
 	facing_direction = Vector2.RIGHT
+	attack()
+
+# Nearby enemies
+var enemies_in_range := []
+var current_target : Node2D = null
 
 func _physics_process(delta: float) -> void:
 	if is_dead:
 		return 
+	
+	enemies_in_range = $EnemyDetectionArea.get_overlapping_bodies()
+	if enemies_in_range.size() > 0:
+		current_target = enemies_in_range.front()
 	
 	if roll_cooldown_timer > 0:
 		roll_cooldown_timer -= delta
@@ -53,6 +67,7 @@ func _physics_process(delta: float) -> void:
 	
 		
 	if input_vector != Vector2.ZERO:
+		last_movement = input_vector
 		facing_direction = input_vector.normalized()
 	
 	velocity = input_vector * SPEED
@@ -111,7 +126,83 @@ func die() -> void:
 		print("game over node not found!")
 		
 
+# Experience points
+var experience := 0
+var experience_level := 1
+var collected_experience := 0
+var accum = 0
+
+# Experience collection logic
+func _on_grab_area_area_entered(area: Area2D) -> void:
+	if area.is_in_group("loot"):
+		area.target = self
 	
+func _on_collect_area_area_entered(area: Area2D) -> void:
+	if area.is_in_group("loot"):
+		calculate_experience(area.collect())
+
+func calculate_experience(coin_exp: int) -> void:
+	accum += coin_exp
+	print(accum)
+	collected_experience += coin_exp
+	var experience_needed = calculate_experiencecap()
 	
+	while collected_experience > 0:
+		experience_needed = calculate_experiencecap()
+		if experience + collected_experience >= experience_needed: #level up!
+			experience_level += 1
+			print("level", experience_level)			
+			if experience_label: # Update player level
+				experience_label.level = experience_level
+			collected_experience = experience + collected_experience - experience_needed
+			experience = 0
+		else:
+			experience += collected_experience				
+			collected_experience = 0
+			
+	if experience_bar: # Update exp bar
+		experience_bar.max_value = experience_needed
+		experience_bar.value = experience
 	
+
+func calculate_experiencecap() -> int:
+	var exp_cap = experience_level
+	if experience_level < 20:
+		exp_cap = experience_level * 5
+	elif experience_level < 40:
+		exp_cap = 95 + (experience_level - 19) * 10
+	else:
+		exp_cap = 255 + (experience_level - 39) * 20
+	return exp_cap
 	
+func attack() -> void:
+	if firewall_level > 0:
+		FirewallReloadTimer.wait_time = firewall_attackspeed
+		if FirewallReloadTimer.is_stopped():
+			FirewallReloadTimer.start()
+
+# Firewall Peppering
+var firewall_ammo := 0
+var firewall_base_ammo := 1
+var firewall_attackspeed := 1.5
+var firewall_level := 1
+@onready var firewallPeppering = preload("res://scenes/attacks/firewall_peppering_attack.tscn")
+@onready var FirewallReloadTimer = $Attacks/FirewallPeppering/FirewallReloadTimer
+@onready var FirewallAttackTimer = $Attacks/FirewallPeppering/FirewallAttackTimer
+
+func _on_firewall_reload_timer_timeout() -> void:
+	firewall_ammo += firewall_base_ammo
+	FirewallAttackTimer.start()
+
+func _on_firewall_attack_timer_timeout() -> void:
+	if firewall_ammo > 0:
+		var firewall_attack = firewallPeppering.instantiate()
+		firewall_attack.global_position = global_position
+		firewall_attack.target = current_target.global_position if current_target and is_instance_valid(current_target) else Vector2.ZERO
+		firewall_attack.level = firewall_level
+		add_child(firewall_attack)
+		firewall_ammo -= 1
+		if firewall_ammo > 0:
+			FirewallAttackTimer.start()
+		else:
+			FirewallAttackTimer.stop()

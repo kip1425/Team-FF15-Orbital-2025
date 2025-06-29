@@ -1,0 +1,46 @@
+[gd_resource type="SpriteFrames" load_steps=7 format=3 uid="uid://cccrr8a5x8xpt"]
+
+[ext_resource type="Texture2D" uid="uid://odr6ggd6en00" path="res://assets/loot/red_coin.png" id="1_msous"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0qli6"]
+atlas = ExtResource("1_msous")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t3vaq"]
+atlas = ExtResource("1_msous")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o3nwv"]
+atlas = ExtResource("1_msous")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p4ykw"]
+atlas = ExtResource("1_msous")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ryxxh"]
+atlas = ExtResource("1_msous")
+region = Rect2(64, 0, 16, 16)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0qli6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t3vaq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o3nwv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p4ykw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ryxxh")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]

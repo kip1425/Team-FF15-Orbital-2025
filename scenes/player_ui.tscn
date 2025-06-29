@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://bi247clrlagmu"]
+[gd_scene load_steps=8 format=3 uid="uid://bi247clrlagmu"]
 
 [ext_resource type="Texture2D" uid="uid://dkmebnc7mmp5o" path="res://assets/healthbarUnder.png" id="1_sk4pr"]
 [ext_resource type="Texture2D" uid="uid://c8ppt1mrxfhbb" path="res://assets/healthbarProgress.png" id="2_48xfa"]
-[ext_resource type="Script" uid="uid://cr8shhuamivb1" path="res://scripts/health_bar.gd" id="3_8isll"]
+[ext_resource type="Script" path="res://scripts/health_bar.gd" id="3_8isll"]
 [ext_resource type="Texture2D" uid="uid://cxcm7t65o2yov" path="res://assets/sprites/profpic.png" id="3_48xfa"]
+[ext_resource type="Texture2D" uid="uid://cmxcaxhb2t5s8" path="res://assets/expbarProgress.png" id="4_bkx2g"]
+[ext_resource type="Script" uid="uid://bhsiw6pivr46d" path="res://scripts/experience_bar.gd" id="5_n31oh"]
+[ext_resource type="Script" uid="uid://cxhjh1w4s6dvd" path="res://scripts/experience_label.gd" id="6_n31oh"]
 
 [node name="PlayerUI" type="CanvasLayer"]
 
@@ -16,6 +19,24 @@ scale = Vector2(4.41773, 3.35729)
 texture_under = ExtResource("1_sk4pr")
 texture_progress = ExtResource("2_48xfa")
 script = ExtResource("3_8isll")
+
+[node name="ExperienceBar" type="TextureProgressBar" parent="."]
+offset_left = 131.0
+offset_top = 108.0
+offset_right = 195.0
+offset_bottom = 118.0
+scale = Vector2(4.418, 1)
+texture_under = ExtResource("1_sk4pr")
+texture_progress = ExtResource("4_bkx2g")
+script = ExtResource("5_n31oh")
+
+[node name="ExperienceLabel" type="Label" parent="."]
+offset_left = 140.0
+offset_top = 118.0
+offset_right = 342.0
+offset_bottom = 141.0
+scale = Vector2(0.6, 0.6)
+script = ExtResource("6_n31oh")
 
 [node name="Profpic" type="Sprite2D" parent="."]
 position = Vector2(72, 71)

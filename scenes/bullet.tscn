@@ -6,7 +6,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_y25gk"]
 radius = 3.0
 
-[node name="Bullet" type="Area2D"]
+[node name="Bullet" type="Area2D" groups=["attacks"]]
 top_level = true
 collision_layer = 0
 collision_mask = 5

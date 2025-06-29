@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://cjrp2vjnrvnff"]
+
+[ext_resource type="Script" uid="uid://ctpiig2x6aca0" path="res://scripts/attacks/brute_force_attack.gd" id="1_n6wnc"]
+[ext_resource type="Texture2D" uid="uid://cxcla23nkn817" path="res://assets/attacks/brute_force_attack.png" id="1_wi7t7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n6wnc"]
+size = Vector2(39, 20)
+
+[node name="BruteForceAttack" type="Area2D" groups=["attacks"]]
+script = ExtResource("1_n6wnc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0.5, 4.76837e-07)
+scale = Vector2(0.144444, 0.136986)
+texture = ExtResource("1_wi7t7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["attacks"]]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_n6wnc")
+
+[node name="Timer" type="Timer" parent="."]

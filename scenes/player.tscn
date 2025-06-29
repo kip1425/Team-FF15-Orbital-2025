@@ -1,10 +1,10 @@
-[gd_scene load_steps=44 format=3 uid="uid://d0qj12vt18la7"]
+[gd_scene load_steps=47 format=3 uid="uid://d0qj12vt18la7"]
 
 [ext_resource type="Texture2D" uid="uid://ck20xuhq111tu" path="res://assets/sprites/knight.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://es6ttu4gxdh7" path="res://scripts/player.gd" id="1_g2els"]
-[ext_resource type="PackedScene" uid="uid://db0xux3hnqdtv" path="res://scenes/gun.tscn" id="3_qhqgy"]
 [ext_resource type="AudioStream" uid="uid://dk1a3a0jpw244" path="res://assets/sounds/jump.wav" id="4_dqkch"]
 [ext_resource type="AudioStream" uid="uid://bqla0qsluke6i" path="res://assets/sounds/tap.wav" id="5_qlg0r"]
+[ext_resource type="PackedScene" uid="uid://db0xux3hnqdtv" path="res://scenes/gun.tscn" id="5_tuyoq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_md1ol"]
 atlas = ExtResource("1_3vyb7")
@@ -289,6 +289,15 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_fjrip"]
 radius = 5.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_qlg0r"]
+radius = 78.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dqkch"]
+radius = 58.0775
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tuyoq"]
+radius = 14.8661
+
 [node name="Player" type="CharacterBody2D"]
 z_index = 5
 collision_layer = 2
@@ -306,9 +315,6 @@ frame_progress = 1.0
 position = Vector2(0, -5)
 shape = SubResource("CircleShape2D_fjrip")
 
-[node name="Gun" parent="." instance=ExtResource("3_qhqgy")]
-position = Vector2(0, -9)
-
 [node name="RollSoundPlayer" type="AudioStreamPlayer2D" parent="."]
 unique_name_in_owner = true
 stream = ExtResource("4_dqkch")
@@ -317,3 +323,42 @@ volume_db = -10.0
 [node name="TakeDamageSound" type="AudioStreamPlayer2D" parent="."]
 unique_name_in_owner = true
 stream = ExtResource("5_qlg0r")
+
+[node name="Attacks" type="Node2D" parent="."]
+
+[node name="FirewallPeppering" type="Node2D" parent="Attacks"]
+
+[node name="FirewallReloadTimer" type="Timer" parent="Attacks/FirewallPeppering"]
+wait_time = 1.5
+
+[node name="FirewallAttackTimer" type="Timer" parent="Attacks/FirewallPeppering"]
+wait_time = 0.075
+
+[node name="Gun" parent="Attacks" instance=ExtResource("5_tuyoq")]
+
+[node name="EnemyDetectionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 5
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetectionArea"]
+shape = SubResource("CircleShape2D_qlg0r")
+
+[node name="GrabArea" type="Area2D" parent="." groups=["grab_area"]]
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GrabArea"]
+shape = SubResource("CircleShape2D_dqkch")
+
+[node name="CollectArea" type="Area2D" parent="." groups=["collect_area"]]
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollectArea"]
+shape = SubResource("CircleShape2D_tuyoq")
+
+[connection signal="timeout" from="Attacks/FirewallPeppering/FirewallReloadTimer" to="." method="_on_firewall_reload_timer_timeout"]
+[connection signal="timeout" from="Attacks/FirewallPeppering/FirewallAttackTimer" to="." method="_on_firewall_attack_timer_timeout"]
+[connection signal="area_entered" from="GrabArea" to="." method="_on_grab_area_area_entered"]
+[connection signal="area_entered" from="CollectArea" to="." method="_on_collect_area_area_entered"]
