@@ -20,8 +20,9 @@ var wave_label = null
 var time_label = null
 
 func _ready():
-	await get_tree().create_timer(0.1).timeout
-	start_wave()
+	#await get_tree().create_timer(0.1).timeout
+	#start_wave()
+	pass
 	
 func _process(delta):
 	if not player_ui_ready:

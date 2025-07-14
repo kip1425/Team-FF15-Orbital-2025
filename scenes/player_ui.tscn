@@ -1,14 +1,17 @@
-[gd_scene load_steps=8 format=3 uid="uid://bi247clrlagmu"]
+[gd_scene load_steps=10 format=3 uid="uid://bi247clrlagmu"]
 
 [ext_resource type="Texture2D" uid="uid://dkmebnc7mmp5o" path="res://assets/healthbarUnder.png" id="1_sk4pr"]
+[ext_resource type="Script" uid="uid://bj63hgu5h4pwx" path="res://scripts/player_ui.gd" id="1_wsb5h"]
 [ext_resource type="Texture2D" uid="uid://c8ppt1mrxfhbb" path="res://assets/healthbarProgress.png" id="2_48xfa"]
-[ext_resource type="Script" path="res://scripts/health_bar.gd" id="3_8isll"]
+[ext_resource type="Script" uid="uid://cr8shhuamivb1" path="res://scripts/health_bar.gd" id="3_8isll"]
 [ext_resource type="Texture2D" uid="uid://cxcm7t65o2yov" path="res://assets/sprites/profpic.png" id="3_48xfa"]
 [ext_resource type="Texture2D" uid="uid://cmxcaxhb2t5s8" path="res://assets/expbarProgress.png" id="4_bkx2g"]
 [ext_resource type="Script" uid="uid://bhsiw6pivr46d" path="res://scripts/experience_bar.gd" id="5_n31oh"]
 [ext_resource type="Script" uid="uid://cxhjh1w4s6dvd" path="res://scripts/experience_label.gd" id="6_n31oh"]
+[ext_resource type="FontFile" uid="uid://r6f2kxo2kfmu" path="res://assets/fonts/PixelOperator8.ttf" id="9_g4s8q"]
 
 [node name="PlayerUI" type="CanvasLayer"]
+script = ExtResource("1_wsb5h")
 
 [node name="HealthBar" type="TextureProgressBar" parent="."]
 offset_left = 130.0
@@ -36,19 +39,21 @@ offset_top = 118.0
 offset_right = 342.0
 offset_bottom = 141.0
 scale = Vector2(0.6, 0.6)
+theme_override_fonts/font = ExtResource("9_g4s8q")
 script = ExtResource("6_n31oh")
 
 [node name="Profpic" type="Sprite2D" parent="."]
-position = Vector2(72, 71)
+position = Vector2(79, 79)
 scale = Vector2(0.615079, 0.615079)
 texture = ExtResource("3_48xfa")
 
 [node name="Label" type="Label" parent="."]
 offset_left = 139.0
-offset_top = 41.0
+offset_top = 46.0
 offset_right = 341.0
-offset_bottom = 64.0
-text = "Player 1"
+offset_bottom = 69.0
+theme_override_fonts/font = ExtResource("9_g4s8q")
+text = "Anoop"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchors_preset = 8
@@ -67,9 +72,48 @@ size_flags_vertical = 0
 
 [node name="WaveLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("9_g4s8q")
 text = "Wave 1"
 
 [node name="TimeLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("9_g4s8q")
 text = "30"
+horizontal_alignment = 1
+
+[node name="BossHealthBar" type="TextureProgressBar" parent="."]
+unique_name_in_owner = true
+visible = false
+anchors_preset = -1
+anchor_left = 0.502
+anchor_top = 0.927
+anchor_right = 0.502
+anchor_bottom = 0.927
+offset_left = -348.304
+offset_top = -10.696
+offset_right = -284.304
+offset_bottom = -0.695984
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(10.8963, 3.3373)
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture_under = ExtResource("1_sk4pr")
+texture_progress = ExtResource("2_48xfa")
+
+[node name="BossNameLabel" type="Label" parent="BossHealthBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = -0.66
+anchor_right = 0.5
+anchor_bottom = -0.66
+offset_left = -15.1135
+offset_top = -4.48682
+offset_right = 200.887
+offset_bottom = 23.5132
+scale = Vector2(0.139781, 0.363463)
+theme_override_fonts/font = ExtResource("9_g4s8q")
+text = "Nodle, Destroyer of Worlds"
 horizontal_alignment = 1

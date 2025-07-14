@@ -112,6 +112,8 @@ func take_damage(amount: int) -> void:
 func update_health_bar() -> void:
 	if health_bar:
 		health_bar.value = current_health
+		
+
 
 func die() -> void:
 	is_dead = true

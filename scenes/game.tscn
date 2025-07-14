@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://drx1kboyjhcpm"]
+[gd_scene load_steps=16 format=4 uid="uid://drx1kboyjhcpm"]
 
 [ext_resource type="Script" uid="uid://cnu7i4x03w13n" path="res://scripts/game_manager.gd" id="1_0tnpc"]
 [ext_resource type="Script" uid="uid://r2pnwpsjjsti" path="res://scripts/game.gd" id="1_gee14"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://hm70bblbixfi" path="res://scenes/pause_menu.tscn" id="6_0tnpc"]
 [ext_resource type="PackedScene" uid="uid://be52rmi87va5c" path="res://scenes/killzone.tscn" id="6_p57ef"]
 [ext_resource type="PackedScene" uid="uid://c28bfituefvx5" path="res://scenes/game_over.tscn" id="6_vtaks"]
-[ext_resource type="FontFile" uid="uid://r6f2kxo2kfmu" path="res://assets/fonts/PixelOperator8.ttf" id="8_gee14"]
 [ext_resource type="Texture2D" uid="uid://coni6xwa2tnd" path="res://assets/sprites/sci-fi-tileset.png" id="8_kvpfn"]
 [ext_resource type="PackedScene" uid="uid://bi247clrlagmu" path="res://scenes/player_ui.tscn" id="10_vtaks"]
 
@@ -268,9 +267,21 @@ script = ExtResource("1_0tnpc")
 position = Vector2(335, -101)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
+scale = Vector2(-14.9706, -65936.9)
 zoom = Vector2(4, 4)
 limit_bottom = 140
 limit_smoothed = true
+
+[node name="GameOver" parent="Player/Camera2D" instance=ExtResource("6_vtaks")]
+process_mode = 3
+visible = false
+z_index = 100
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+scale = Vector2(-0.0308458, -6.49384e-06)
 
 [node name="PauseMenu" parent="Player/Camera2D" instance=ExtResource("6_0tnpc")]
 visible = false
@@ -279,15 +290,8 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-scale = Vector2(0.313879, 0.309993)
-
-[node name="GameOver" parent="Player/Camera2D" instance=ExtResource("6_vtaks")]
-process_mode = 3
-visible = false
-z_index = 100
-offset_top = -1.0
-offset_bottom = -1.0
-scale = Vector2(0.471738, 0.446007)
+scale = Vector2(-0.0204186, -4.51212e-06)
+size_flags_horizontal = 8
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(0, -1)
@@ -313,17 +317,6 @@ shape = SubResource("WorldBoundaryShape2D_u5sy4")
 
 [node name="Labels" type="Node" parent="Killzone/CollisionShape2D"]
 
-[node name="Label" type="Label" parent="Killzone/CollisionShape2D/Labels"]
-offset_left = 288.0
-offset_top = -136.0
-offset_right = 402.0
-offset_bottom = -101.0
-theme_override_fonts/font = ExtResource("8_gee14")
-theme_override_font_sizes/font_size = 8
-text = "W A S D to move
-Spacebar to roll
-"
-
 [node name="Path2D" type="Path2D" parent="."]
 curve = SubResource("Curve2D_0tnpc")
 
@@ -332,3 +325,7 @@ unique_name_in_owner = true
 position = Vector2(41, -281)
 
 [node name="PlayerUI" parent="." instance=ExtResource("10_vtaks")]
+
+[node name="BossSpawn" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(333, -168)

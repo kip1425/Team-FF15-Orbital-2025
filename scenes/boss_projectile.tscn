@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://tcve0rbnn70g"]
+
+[ext_resource type="Script" uid="uid://c2ipincm0mbrf" path="res://scripts/boss_projectile.gd" id="1_6ienu"]
+[ext_resource type="Texture2D" uid="uid://bijyfmpwhqx5a" path="res://assets/fireball_asset/FB001.png" id="2_6ienu"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_y25gk"]
+radius = 7.0
+
+[node name="BossProjectile" type="Area2D"]
+top_level = true
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_6ienu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+top_level = true
+shape = SubResource("CircleShape2D_y25gk")
+
+[node name="bp_sprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-10, 1)
+scale = Vector2(0.811442, 0.811442)
+texture = ExtResource("2_6ienu")

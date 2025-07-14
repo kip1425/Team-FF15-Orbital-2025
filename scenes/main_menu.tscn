@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://ch34e7wcqdiit"]
+[gd_scene load_steps=7 format=3 uid="uid://ch34e7wcqdiit"]
 
 [ext_resource type="Script" uid="uid://dn4dtbls21857" path="res://scripts/main_menu.gd" id="1_ekxnf"]
 [ext_resource type="Texture2D" uid="uid://b8gliodtwj21b" path="res://assets/MenuBG.png" id="1_l6cm7"]
+[ext_resource type="FontFile" uid="uid://r6f2kxo2kfmu" path="res://assets/fonts/PixelOperator8.ttf" id="3_bqqt6"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ekxnf"]
 texture = ExtResource("1_l6cm7")
@@ -53,6 +54,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = SubResource("Theme_ekxnf")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_bqqt6")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_vue75")
 text = "Start Game"
@@ -62,6 +64,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = SubResource("Theme_ekxnf")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_bqqt6")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_vue75")
 text = "Options"
@@ -71,6 +74,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = SubResource("Theme_ekxnf")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_bqqt6")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_vue75")
 text = "Exit"
@@ -82,14 +86,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -231.0
-offset_top = -250.0
-offset_right = 233.0
-offset_bottom = -162.0
+offset_left = -342.0
+offset_top = -220.0
+offset_right = 370.0
+offset_bottom = -121.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 64
-text = "Codepocalypse"
+theme_override_fonts/font = ExtResource("3_bqqt6")
+theme_override_font_sizes/font_size = 48
+text = "Codepocalypse:
+Anoop's Last Stand"
+horizontal_alignment = 1
 
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="VBoxContainer/Button3" to="." method="_on_exit_pressed"]

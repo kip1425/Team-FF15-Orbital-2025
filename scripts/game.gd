@@ -3,15 +3,11 @@ extends Node2D
 var ENEMY_NUMBER = 4
 
 func _ready() -> void:
-	spawn_mob()
-	spawn_mob()
-	spawn_mob()
-	spawn_mob()
-	spawn_mob()
-	
+	spawn_boss_mob()
 	
 @onready var pause_menu = $Player/Camera2D/PauseMenu
 @onready var path_follow = $Path2D/PathFollow2D
+@onready var center_marker = $BossSpawn
 var paused = false
 
 func spawn_random_mob():
@@ -44,6 +40,18 @@ func spawn_at_path(mob):
 	mob.global_position = path_follow.global_position
 	add_child(mob)
 
+func spawn_boss_mob():
+	var new_boss = preload("res://scenes/boss.tscn").instantiate()
+	var player_ui = get_node_or_null("/root/Game/PlayerUI")
+	new_boss.global_position = center_marker.global_position
+
+	if player_ui:
+		new_boss.connect("health_changed", Callable(player_ui, "_on_boss_health_changed"))
+		new_boss.connect("died", Callable(player_ui, "_on_boss_died"))
+		player_ui.show_boss_bar("Eldon, the Cruel", new_boss.max_health)
+
+	add_child(new_boss)
+	
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause"):
 		pauseMenu()
