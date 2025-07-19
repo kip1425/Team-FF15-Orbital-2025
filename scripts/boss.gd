@@ -9,6 +9,7 @@ enum STATE {
 	RUSH_PREP,
 	RUSH_MOVE,
 	RUSH_RECOVER,
+	SUMMON,
 	DIE
 }
 
@@ -16,6 +17,7 @@ var current_state = STATE.IDLE
 var max_health = 300
 var health: int = max_health
 var is_dead = false
+var summoning = false
 
 const SPEED = 80.0
 const RUSH_SPEED = 500.0
@@ -39,10 +41,12 @@ var rush_timer = 0.0
 @onready var player = get_node("/root/Game/Player")
 @onready var state_timer = $StateTimer
 @onready var shoot_point = $ShootPoint
-@onready var body_shape = $CollisionShape2D
+@onready var body_shape = $BossKillzone/BossCollisionShape2D
+@onready var kill_zone = $BossKillzone
 
 @onready var projectile_scene = preload("res://scenes/boss_projectile.tscn")
 @onready var spiral_projectile_scene = preload("res://scenes/boss_projectile.tscn")
+@onready var minion_scene = preload("res://scenes/mob.tscn")
 
 func _ready():
 	randomize()
@@ -66,11 +70,20 @@ func _physics_process(delta: float) -> void:
 			handle_rush_move(delta)
 		STATE.RUSH_RECOVER:
 			pass
+		STATE.SUMMON:
+			pass
 		STATE.DIE:
 			handle_die(delta)
 				
-func _set_collision_enabled(enabled: bool) -> void:
-	body_shape.set_deferred("disabled", not enabled)
+func _set_burrowed(burrowed: bool) -> void:
+	# Disable body collision
+	body_shape.set_deferred("disabled", burrowed)
+	
+	# Disable killzone (Area2D's monitoring and its shape)
+	kill_zone.set_deferred("monitoring", not burrowed)
+	for c in kill_zone.get_children():
+		if c is CollisionShape2D:
+			c.set_deferred("disabled", burrowed)
 		
 func handle_idle(delta):
 	velocity = Vector2.ZERO
@@ -92,7 +105,10 @@ func handle_attack(delta):
 	
 func handle_die(delta):
 	velocity = Vector2.ZERO
-	
+
+func handle_summon(delta):
+	velocity = Vector2.ZERO
+		
 func handle_spiral(delta):
 	spiral_elapsed += delta
 	if spiral_elapsed >= SPIRAL_INTERVAL:
@@ -141,7 +157,7 @@ func change_state(new_state):
 			spiral_angle = 0.0
 			spiral_shots_fired = 0
 		STATE.RUSH_PREP:
-			_set_collision_enabled(false)
+			_set_burrowed(true)  
 			anim.play("dig_down")
 			rush_timer = 0.0
 			await anim.animation_finished
@@ -156,15 +172,21 @@ func change_state(new_state):
 		STATE.RUSH_RECOVER:
 			velocity = Vector2.ZERO
 			await get_tree().create_timer(UNBURROW_DELAY).timeout
-			
 			anim.visible = true
 			anim.play("dig_up")
 			await anim.animation_finished
+			_set_burrowed(false)
+			change_state(STATE.IDLE)
+		STATE.SUMMON:
+			velocity = Vector2.ZERO
+			anim.play("sp_atk")
+			await anim.animation_finished
+			_spawn_minions_random(5, 10)
 			change_state(STATE.IDLE)
 		STATE.DIE:
 			velocity = Vector2.ZERO 
-			anim.play("death")
-			
+			anim.play("death")	
+	
 func fire_projectile_burst(count: int = 16, trail_count: int = 3, trail_spacing: float = 14.0):
 	for i in range(count):
 		var angle = i * TAU / count  # TAU = 2π
@@ -188,6 +210,22 @@ func fire_spiral_projectile():
 	p.global_position = shoot_point.global_position
 	p.init(dir)
 	get_parent().add_child(p)
+	
+func _start_summon():
+	summoning = true
+	anim.play("sp_atk")
+	await anim.animation_finished
+	_spawn_minions_random(5, 10)
+	summoning = false
+	change_state(STATE.IDLE)
+	
+func _spawn_minions_random(min_count: int = 5, max_count: int = 10) -> void:
+	var count = randi() % (max_count - min_count + 1) + min_count
+	for i in range(count):
+		var minion = minion_scene.instantiate()
+		var offset = Vector2.RIGHT.rotated(randf() * TAU) * randf_range(40, 80)
+		minion.global_position = global_position + offset
+		get_parent().add_child(minion)
 
 signal health_changed(current: int, max: int)
 signal died
@@ -210,11 +248,13 @@ func _on_state_timer_timeout() -> void:
 			_pick_close_range_attack()
 			
 func _pick_close_range_attack() -> void:
-	var roll = randi() % 3
+	var roll = randi() % 4
 	if roll == 0:
 		change_state(STATE.SPECIAL)
 	elif roll == 1:
 		change_state(STATE.SPIRAL)
+	elif roll == 2:
+		change_state(STATE.SUMMON)
 	else:
 		change_state(STATE.RUSH_PREP)
 		
@@ -229,5 +269,3 @@ func _on_animated_sprite_2d_frame_changed() -> void:
 		fire_projectile_burst()
 		special_fired = true
 	
-	elif current_state == STATE.RUSH_RECOVER and anim.animation == "dig_up" and anim.frame == DIG_UP_ENABLE_FRAME:
-		_set_collision_enabled(true)

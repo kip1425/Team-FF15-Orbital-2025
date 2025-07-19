@@ -702,7 +702,7 @@ script = ExtResource("1_qnbj4")
 unique_name_in_owner = true
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_71rcx")
-animation = &"dig_up"
+animation = &"sp_atk"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -718,10 +718,6 @@ unique_name_in_owner = true
 position = Vector2(0.5, 23)
 shape = SubResource("RectangleShape2D_xsfyf")
 
-[node name="Hurtbox" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-
 [node name="ShootPoint" type="Marker2D" parent="."]
 unique_name_in_owner = true
 
@@ -729,10 +725,6 @@ unique_name_in_owner = true
 
 [node name="StateTimer" type="Timer" parent="."]
 unique_name_in_owner = true
-
-[node name="DigEffectArea" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DigEffectArea"]
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="frame_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_frame_changed"]
