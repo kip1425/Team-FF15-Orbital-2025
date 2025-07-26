@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://c28bfituefvx5"]
+[gd_scene load_steps=3 format=3 uid="uid://c28bfituefvx5"]
 
 [ext_resource type="Script" uid="uid://2vaj35dsjbid" path="res://scripts/game_over.gd" id="1_jxu8s"]
+[ext_resource type="FontFile" uid="uid://r6f2kxo2kfmu" path="res://assets/fonts/PixelOperator8.ttf" id="2_wqhvx"]
 
 [node name="GameOver" type="Control"]
 layout_mode = 3
@@ -28,6 +29,7 @@ grow_vertical = 2
 [node name="Label" type="Label" parent="MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("2_wqhvx")
 theme_override_font_sizes/font_size = 16
 text = "Game Over"
 horizontal_alignment = 1
@@ -38,11 +40,13 @@ size_flags_vertical = 4
 
 [node name="Restart" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_wqhvx")
 theme_override_font_sizes/font_size = 16
 text = "Restart"
 
 [node name="Quit" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_wqhvx")
 theme_override_font_sizes/font_size = 16
 text = "Quit"
 
