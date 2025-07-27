@@ -14,7 +14,9 @@ enum STATE {
 }
 
 var current_state = STATE.IDLE
-var max_health = 50
+
+var max_health = 100
+
 var health: int = max_health
 var is_dead = false
 var summoning = false

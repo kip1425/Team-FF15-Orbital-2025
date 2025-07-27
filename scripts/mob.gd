@@ -1,7 +1,7 @@
 class_name Mob extends CharacterBody2D
 
 var health = 3
-var experience = 1
+var experience = 4
 var is_hurt = false
 var SPEED = 75.0
 @onready var player = get_node("/root/Game/Player")

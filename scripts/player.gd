@@ -7,6 +7,7 @@ const ROLL_SPEED = 300.0
 const ROLL_COOLDOWN = 1.0
 
 var current_health = MAX_HEALTH
+var armor = 0
 var is_dead = false
 
 var is_rolling = false
@@ -16,7 +17,7 @@ var roll_cooldown_timer = 0.0
 
 var facing_direction: Vector2 = Vector2.RIGHT
 
-# Variable for zigzag motion of brute_force_attack
+# Variable for zigzag motion of ddos_cyclone_attack
 var last_movement = Vector2.UP
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
@@ -57,10 +58,12 @@ func _physics_process(delta: float) -> void:
 			is_rolling = false
 		return
 	
-	var input_vector := Vector2(
+	var before_normalize = Vector2(
 		Input.get_action_strength("moveright") - Input.get_action_strength("moveleft"),
 		Input.get_action_strength("movedown") - Input.get_action_strength("moveup")
-	).normalized()
+	)
+	
+	var input_vector := before_normalize.normalized()
 	
 	if Input.is_action_just_pressed("roll") and roll_cooldown_timer <= 0:
 		start_roll(input_vector)
@@ -68,7 +71,7 @@ func _physics_process(delta: float) -> void:
 	
 		
 	if input_vector != Vector2.ZERO:
-		last_movement = input_vector
+		last_movement = before_normalize
 		facing_direction = input_vector.normalized()
 	
 	velocity = input_vector * SPEED
@@ -104,7 +107,7 @@ func take_damage(amount: int) -> void:
 	
 	if is_dead or is_rolling:
 		return
-	current_health -= amount
+	current_health -= clamp(amount - armor, 1, 999)
 	if current_health <= 0:
 		current_health = 0
 		die()
@@ -113,7 +116,6 @@ func take_damage(amount: int) -> void:
 func update_health_bar() -> void:
 	if health_bar:
 		health_bar.value = current_health
-
 
 func die() -> void:
 	is_dead = true
@@ -142,6 +144,9 @@ func _on_collect_area_area_entered(area: Area2D) -> void:
 	if area.is_in_group("loot"):
 		calculate_experience(area.collect())
 
+var pending_level_ups = 0
+var level_up_active = false
+
 func calculate_experience(coin_exp: int) -> void:
 	accum += coin_exp
 	print(accum)
@@ -152,15 +157,19 @@ func calculate_experience(coin_exp: int) -> void:
 		experience_needed = calculate_experiencecap()
 		if experience + collected_experience >= experience_needed: #level up!
 			experience_level += 1
-			print("level", experience_level)			
+			print("level", experience_level)
 			if experience_label: # Update player level
 				experience_label.level = experience_level
 			collected_experience = experience + collected_experience - experience_needed
 			experience = 0
+			pending_level_ups += 1
 		else:
-			experience += collected_experience				
+			experience += collected_experience
 			collected_experience = 0
 			
+	if pending_level_ups > 0 and not level_up_active:
+		level_up()
+	
 	if experience_bar: # Update exp bar
 		experience_bar.max_value = experience_needed
 		experience_bar.value = experience
@@ -175,18 +184,160 @@ func calculate_experiencecap() -> int:
 	else:
 		exp_cap = 255 + (experience_level - 39) * 20
 	return exp_cap
+
+# Level Up Stuff
+@onready var level_up_panel : Panel = $LevelUpCanvas/LevelUpPanel
+@onready var level_up_label : RichTextLabel = $LevelUpCanvas/LevelUpPanel/LevelUpLabel
+@onready var upgrade_options : VBoxContainer = $LevelUpCanvas/LevelUpPanel/UpgradeOptions
+@onready var attack_option := preload("res://scenes/attack_option.tscn")
+@onready var level_up_sound : AudioStreamPlayer2D = $LevelUpCanvas/LevelUpPanel/LevelUpSound
+
+var possible_upgrades = {}
+var collected_upgrades = {}
+
+func get_random_upgrade():
+	var db = []
+	for upgrade in UpgradesDatabase.upgrades:
+		if collected_upgrades.has(upgrade):
+			pass
+		elif possible_upgrades.has(upgrade):
+			pass
+		elif UpgradesDatabase.upgrades[upgrade]["type"] == "item":
+			pass
+		elif UpgradesDatabase.upgrades[upgrade]["prerequisite"].size() > 0:
+			for prereq in UpgradesDatabase.upgrades[upgrade]["prerequisite"]:
+				if not collected_upgrades.has(prereq):
+					pass
+				else:
+					db.append(upgrade)
+		else:
+			db.append(upgrade)
+	if db.size() > 0:
+		var random_item = db.pick_random()
+		possible_upgrades.set(random_item, true)
+		return random_item
+	else:
+		return null
+		
+		
+func upgrade_character(upgrade):
+	match upgrade:
+		"firewall1":
+			firewall_level = 1
+		"firewall2":
+			firewall_level = 2
+		"firewall3":
+			firewall_level = 3
+		"cyclone1":
+			cyclone_level = 1
+		"cyclone2":
+			cyclone_level = 2
+			cyclone_base_ammo += 1
+		"cyclone3":
+			cyclone_level = 3
+			cyclone_base_ammo += 1
+		"orbital1":
+			orbital_level = 1
+		"orbital2":
+			orbital_level = 2
+		"orbital3":
+			orbital_level = 3
+		"armor1", "armor2":
+			armor += 1
+		"armor3", "armor4":
+			armor += 2
+		"food":
+			current_health += 20
+			clamp(current_health, 0, MAX_HEALTH)
+			
+	var upgrade_children = upgrade_options.get_children()
+	for child in upgrade_children:
+		child.queue_free()
+	possible_upgrades.clear()
+	collected_upgrades.set(upgrade, true)
+	level_up_panel.visible = false
+	level_up_panel.position = Vector2(1236, 77)
+	get_tree().paused = false
 	
+	pending_level_ups -= 1
+	if pending_level_ups > 0:
+		level_up()
+	else:
+		level_up_active = false
+		attack()
+
+
+func level_up() -> void:
+	level_up_active = true
+	level_up_sound.play()
+	var tween := level_up_panel.create_tween()
+	tween.tween_property(level_up_panel, "position", Vector2(319, 76), 0.2).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN)
+	tween.play()
+	level_up_panel.visible = true
+	
+	var options = 0
+	var max_options = 3
+	while options < max_options:
+		var new_option = attack_option.instantiate()
+		new_option.item = get_random_upgrade()
+		upgrade_options.add_child(new_option)
+		options += 1
+		
+	get_tree().paused = true
+
+# Attacks
 func attack() -> void:
 	if firewall_level > 0:
 		FirewallReloadTimer.wait_time = firewall_attackspeed
 		if FirewallReloadTimer.is_stopped():
 			FirewallReloadTimer.start()
+	if cyclone_level > 0:
+		CycloneReloadTimer.wait_time = cyclone_attackspeed
+		if CycloneReloadTimer.is_stopped():
+			CycloneReloadTimer.start()
+	if orbital_level > 0:
+		while (num_of_swords < orbital_level):
+			num_of_swords += 1
+			$Attacks/ArtemisOrbital.add_child(sword.instantiate())
+	
+
+# Artemis Orbital
+var orbit_speed := 2.0
+var num_of_swords := 0
+var orbital_level := 0
+@onready var sword = preload("res://scenes/attacks/sword.tscn")
+
+# DDOS Cyclone
+var cyclone_ammo := 0
+var cyclone_base_ammo := 2
+var cyclone_attackspeed := 3.0
+var cyclone_level := 0
+@onready var DDOSCyclone = preload("res://scenes/attacks/ddos_cyclone.tscn")
+@onready var CycloneReloadTimer = $Attacks/DDOSCyclone/CycloneReloadTimer
+@onready var CycloneAttackTimer = $Attacks/DDOSCyclone/CycloneAttackTimer
+
+func _on_cyclone_reload_timer_timeout() -> void:
+	cyclone_ammo += cyclone_base_ammo
+	CycloneAttackTimer.start()
+
+func _on_cyclone_attack_timer_timeout() -> void:
+	if cyclone_ammo > 0:
+		var cyclone_attack = DDOSCyclone.instantiate()
+		cyclone_attack.global_position = global_position
+		cyclone_attack.last_movement = last_movement
+		cyclone_attack.level = cyclone_level
+		add_child(cyclone_attack)
+		cyclone_ammo -= 1
+		if cyclone_ammo > 0:
+			CycloneAttackTimer.start()
+		else:
+			CycloneAttackTimer.stop()
 
 # Firewall Peppering
 var firewall_ammo := 0
 var firewall_base_ammo := 1
 var firewall_attackspeed := 1.5
-var firewall_level := 1
+var firewall_level := 0
 @onready var firewallPeppering = preload("res://scenes/attacks/firewall_peppering_attack.tscn")
 @onready var FirewallReloadTimer = $Attacks/FirewallPeppering/FirewallReloadTimer
 @onready var FirewallAttackTimer = $Attacks/FirewallPeppering/FirewallAttackTimer

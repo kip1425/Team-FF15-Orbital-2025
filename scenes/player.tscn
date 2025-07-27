@@ -1,10 +1,12 @@
-[gd_scene load_steps=47 format=3 uid="uid://d0qj12vt18la7"]
+[gd_scene load_steps=50 format=3 uid="uid://d0qj12vt18la7"]
 
 [ext_resource type="Texture2D" uid="uid://ck20xuhq111tu" path="res://assets/sprites/knight.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://es6ttu4gxdh7" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="AudioStream" uid="uid://dk1a3a0jpw244" path="res://assets/sounds/jump.wav" id="4_dqkch"]
+[ext_resource type="PackedScene" uid="uid://db0xux3hnqdtv" path="res://scenes/gun.tscn" id="5_fjrip"]
 [ext_resource type="AudioStream" uid="uid://bqla0qsluke6i" path="res://assets/sounds/tap.wav" id="5_qlg0r"]
-[ext_resource type="PackedScene" uid="uid://db0xux3hnqdtv" path="res://scenes/gun.tscn" id="5_tuyoq"]
+[ext_resource type="Script" uid="uid://iiblclctul63" path="res://scripts/attacks/artemis_orbital.gd" id="5_smehm"]
+[ext_resource type="AudioStream" uid="uid://uhtko0avedv7" path="res://assets/sounds/level up.mp3" id="6_tuyoq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_md1ol"]
 atlas = ExtResource("1_3vyb7")
@@ -298,6 +300,8 @@ radius = 58.0775
 [sub_resource type="CircleShape2D" id="CircleShape2D_tuyoq"]
 radius = 14.8661
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tuyoq"]
+
 [node name="Player" type="CharacterBody2D"]
 z_index = 5
 collision_layer = 2
@@ -326,6 +330,8 @@ stream = ExtResource("5_qlg0r")
 
 [node name="Attacks" type="Node2D" parent="."]
 
+[node name="Gun" parent="Attacks" instance=ExtResource("5_fjrip")]
+
 [node name="FirewallPeppering" type="Node2D" parent="Attacks"]
 
 [node name="FirewallReloadTimer" type="Timer" parent="Attacks/FirewallPeppering"]
@@ -334,7 +340,17 @@ wait_time = 1.5
 [node name="FirewallAttackTimer" type="Timer" parent="Attacks/FirewallPeppering"]
 wait_time = 0.075
 
-[node name="Gun" parent="Attacks" instance=ExtResource("5_tuyoq")]
+[node name="ArtemisOrbital" type="Node2D" parent="Attacks"]
+position = Vector2(0, -9)
+script = ExtResource("5_smehm")
+
+[node name="DDOSCyclone" type="Node2D" parent="Attacks"]
+
+[node name="CycloneReloadTimer" type="Timer" parent="Attacks/DDOSCyclone"]
+wait_time = 3.0
+
+[node name="CycloneAttackTimer" type="Timer" parent="Attacks/DDOSCyclone"]
+wait_time = 0.2
 
 [node name="EnemyDetectionArea" type="Area2D" parent="."]
 collision_layer = 0
@@ -358,7 +374,39 @@ collision_mask = 8
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollectArea"]
 shape = SubResource("CircleShape2D_tuyoq")
 
+[node name="LevelUpCanvas" type="CanvasLayer" parent="."]
+process_mode = 2
+
+[node name="LevelUpPanel" type="Panel" parent="LevelUpCanvas"]
+visible = false
+offset_left = 1236.0
+offset_top = 77.0
+offset_right = 1741.0
+offset_bottom = 591.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tuyoq")
+
+[node name="LevelUpLabel" type="RichTextLabel" parent="LevelUpCanvas/LevelUpPanel"]
+layout_mode = 0
+offset_right = 505.0
+offset_bottom = 100.0
+theme_override_font_sizes/normal_font_size = 30
+text = "Level Up!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="UpgradeOptions" type="VBoxContainer" parent="LevelUpCanvas/LevelUpPanel"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 100.0
+offset_right = 477.0
+offset_bottom = 200.0
+
+[node name="LevelUpSound" type="AudioStreamPlayer2D" parent="LevelUpCanvas/LevelUpPanel"]
+stream = ExtResource("6_tuyoq")
+
 [connection signal="timeout" from="Attacks/FirewallPeppering/FirewallReloadTimer" to="." method="_on_firewall_reload_timer_timeout"]
 [connection signal="timeout" from="Attacks/FirewallPeppering/FirewallAttackTimer" to="." method="_on_firewall_attack_timer_timeout"]
+[connection signal="timeout" from="Attacks/DDOSCyclone/CycloneReloadTimer" to="." method="_on_cyclone_reload_timer_timeout"]
+[connection signal="timeout" from="Attacks/DDOSCyclone/CycloneAttackTimer" to="." method="_on_cyclone_attack_timer_timeout"]
 [connection signal="area_entered" from="GrabArea" to="." method="_on_grab_area_area_entered"]
 [connection signal="area_entered" from="CollectArea" to="." method="_on_collect_area_area_entered"]

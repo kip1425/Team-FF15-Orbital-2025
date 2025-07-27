@@ -66,6 +66,14 @@ func _on_flash_timer_timeout() -> void:
 func _on_explode_timer_timeout() -> void:
 	die() # Replace with function body.
 
+func spawn_coin(coin_exp: int) -> void:
+	var coin_scene = preload("res://scenes/loot/experience_coin.tscn")
+	var coin = coin_scene.instantiate()
+	coin.global_position = global_position
+	coin.experience = coin_exp
+	get_parent().add_child(coin)
+	
 func die():
+	spawn_coin(8)
 	queue_free()
 	
