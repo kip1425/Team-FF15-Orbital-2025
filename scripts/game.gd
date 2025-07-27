@@ -3,7 +3,7 @@ extends Node2D
 var ENEMY_NUMBER = 4
 
 func _ready() -> void:
-	spawn_boss_mob()
+	pass
 	
 @onready var pause_menu = $Player/Camera2D/PauseMenu
 @onready var path_follow = $Path2D/PathFollow2D
@@ -48,7 +48,7 @@ func spawn_boss_mob():
 	if player_ui:
 		new_boss.connect("health_changed", Callable(player_ui, "_on_boss_health_changed"))
 		new_boss.connect("died", Callable(player_ui, "_on_boss_died"))
-		player_ui.show_boss_bar("Eldon, the Cruel", new_boss.max_health)
+		player_ui.show_boss_bar("Nodle, the Cruel", new_boss.max_health)
 
 	add_child(new_boss)
 	

@@ -1,6 +1,6 @@
 extends Area2D
 
-const SPEED := 200.0
+const SPEED := 140.0
 const RANGE := 100.0
 
 var travelled_distance := 0.0

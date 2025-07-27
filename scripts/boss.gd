@@ -14,7 +14,7 @@ enum STATE {
 }
 
 var current_state = STATE.IDLE
-var max_health = 300
+var max_health = 50
 var health: int = max_health
 var is_dead = false
 var summoning = false
@@ -23,9 +23,9 @@ const SPEED = 80.0
 const RUSH_SPEED = 500.0
 const RUSH_DURATION = 0.6
 const RUSH_CLOSE_DIST = 24.0
-const SPIRAL_INTERVAL = 0.08
-const SPIRAL_TOTAL_SHOTS = 60
-const SPIRAL_ANGLE_STEP = TAU / 12
+const SPIRAL_INTERVAL = 0.06 #0.08
+const SPIRAL_TOTAL_SHOTS = 144 #60
+const SPIRAL_ANGLE_STEP = TAU / 24 #12
 const DIG_UP_ENABLE_FRAME = 10
 const UNBURROW_DELAY = 0.8
 
@@ -36,6 +36,7 @@ var spiral_shots_fired = 0
 var special_fired = false
 var rush_dir = Vector2.ZERO
 var rush_timer = 0.0
+var attack_step = 0
 
 @onready var anim = $AnimatedSprite2D
 @onready var player = get_node("/root/Game/Player")
@@ -248,15 +249,20 @@ func _on_state_timer_timeout() -> void:
 			_pick_close_range_attack()
 			
 func _pick_close_range_attack() -> void:
-	var roll = randi() % 4
-	if roll == 0:
-		change_state(STATE.SPECIAL)
-	elif roll == 1:
-		change_state(STATE.SPIRAL)
-	elif roll == 2:
-		change_state(STATE.SUMMON)
-	else:
-		change_state(STATE.RUSH_PREP)
+	match attack_step:
+		0:
+			change_state(STATE.SUMMON)
+		1, 2, 3:
+			var roll = randi() % 2
+			if roll == 0:
+				change_state(STATE.SPECIAL)
+			else:
+				change_state(STATE.SPIRAL)
+		4:
+			change_state(STATE.RUSH_PREP)
+	attack_step += 1
+	if attack_step > 4:
+		attack_step = 0
 		
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if current_state == STATE.SPECIAL:

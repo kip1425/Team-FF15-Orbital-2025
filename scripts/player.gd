@@ -1,7 +1,7 @@
 class_name Player extends CharacterBody2D
 
 const SPEED = 180.0
-const MAX_HEALTH = 100
+const MAX_HEALTH = 400
 const ROLL_DURATION = 0.4
 const ROLL_SPEED = 300.0
 const ROLL_COOLDOWN = 1.0
@@ -29,7 +29,8 @@ var last_movement = Vector2.UP
 func _ready() -> void:
 	add_to_group("player")
 	facing_direction = Vector2.RIGHT
-	attack()
+	#attack()
+	#commented out fireball attrack for now
 
 # Nearby enemies
 var enemies_in_range := []
@@ -112,7 +113,6 @@ func take_damage(amount: int) -> void:
 func update_health_bar() -> void:
 	if health_bar:
 		health_bar.value = current_health
-		
 
 
 func die() -> void:
@@ -126,7 +126,6 @@ func die() -> void:
 		game_over_ui.show()
 	else:
 		print("game over node not found!")
-		
 
 # Experience points
 var experience := 0

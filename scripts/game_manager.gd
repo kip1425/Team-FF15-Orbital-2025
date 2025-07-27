@@ -9,6 +9,7 @@ var current_wave := 1
 var time_left := 0.0
 var in_wave = false
 var player_ui_ready = false
+var intro_playing = true
 
 signal wave_started(wave_number: int) 
 signal wave_ended(wave_number: int)
@@ -22,7 +23,30 @@ var time_label = null
 func _ready():
 	#await get_tree().create_timer(0.1).timeout
 	#start_wave()
+	#start_intro_cutscene()
 	pass
+	
+func start_intro_cutscene():
+	var dialogue_box = get_node_or_null("/root/Game/PlayerUI/CutsceneText")
+	if dialogue_box:
+		dialogue_box.text = "Hello"
+	else:
+		print("❌ CutsceneText node not found!")
+	
+	var lines = [
+		 "Welcome to the arena...",
+		 "You must survive as long as you can.",
+		 "Good luck, warrior."
+	]
+	intro_playing = true
+	get_tree().paused = true
+	dialogue_box.start_dialogue(lines, "Narrator", Callable(self, "_on_intro_dialogue_finished"))
+	
+func _on_intro_dialogue_finished():
+	intro_playing = false
+	get_tree().paused = false
+	start_wave()
+	
 	
 func _process(delta):
 	if not player_ui_ready:
@@ -77,9 +101,10 @@ func end_wave():
 func kill_all_enemies():
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		if enemy.has_method("die"):
-			enemy.die()
+			enemy.queue_free()
 		else:
 			enemy.queue_free()
+			#redundant i know
 
 func update_timer_label():
 	if wave_label and time_label:

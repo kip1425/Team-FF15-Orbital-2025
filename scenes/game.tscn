@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://drx1kboyjhcpm"]
+[gd_scene load_steps=17 format=4 uid="uid://drx1kboyjhcpm"]
 
 [ext_resource type="Script" uid="uid://cnu7i4x03w13n" path="res://scripts/game_manager.gd" id="1_0tnpc"]
 [ext_resource type="Script" uid="uid://r2pnwpsjjsti" path="res://scripts/game.gd" id="1_gee14"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://be52rmi87va5c" path="res://scenes/killzone.tscn" id="6_p57ef"]
 [ext_resource type="PackedScene" uid="uid://c28bfituefvx5" path="res://scenes/game_over.tscn" id="6_vtaks"]
 [ext_resource type="Texture2D" uid="uid://coni6xwa2tnd" path="res://assets/sprites/sci-fi-tileset.png" id="8_kvpfn"]
+[ext_resource type="PackedScene" uid="uid://c1byj3hci8v0y" path="res://scenes/dialogue_box.tscn" id="10_kvpfn"]
 [ext_resource type="PackedScene" uid="uid://bi247clrlagmu" path="res://scenes/player_ui.tscn" id="10_vtaks"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lnu2h"]
@@ -325,6 +326,13 @@ unique_name_in_owner = true
 position = Vector2(41, -281)
 
 [node name="PlayerUI" parent="." instance=ExtResource("10_vtaks")]
+
+[node name="CutsceneText" parent="PlayerUI" instance=ExtResource("10_kvpfn")]
+visible = true
+offset_left = -572.0
+offset_top = -166.0
+offset_right = 577.0
+offset_bottom = -7.0
 
 [node name="BossSpawn" type="Marker2D" parent="."]
 unique_name_in_owner = true

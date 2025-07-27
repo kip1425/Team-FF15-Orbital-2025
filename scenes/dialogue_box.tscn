@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://c1byj3hci8v0y"]
+
+[ext_resource type="Texture2D" uid="uid://bb3l0s5uxpesc" path="res://assets/DialogueBoxSimple.png" id="1_hvmm2"]
+[ext_resource type="Script" uid="uid://d1hrx7d02l0wt" path="res://scripts/dialogue_box.gd" id="2_p0wdv"]
+[ext_resource type="FontFile" uid="uid://csxc63uh4whm4" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="3_pehjr"]
+[ext_resource type="FontFile" uid="uid://r6f2kxo2kfmu" path="res://assets/fonts/PixelOperator8.ttf" id="4_c26ww"]
+
+[node name="DialogueBox" type="TextureRect"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -574.0
+offset_top = -159.0
+offset_right = 575.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("1_hvmm2")
+script = ExtResource("2_p0wdv")
+
+[node name="NameLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 34.0
+offset_top = 30.0
+offset_right = 114.0
+offset_bottom = 53.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_pehjr")
+theme_override_font_sizes/font_size = 16
+text = "Anoop"
+
+[node name="DialogueText" type="RichTextLabel" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 32.0
+offset_top = 56.0
+offset_right = 606.0
+offset_bottom = 96.0
+scale = Vector2(1.78257, 1.78257)
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("4_c26ww")
+bbcode_enabled = true
+text = "What are we, some kind of League of Legends? 
+This must be some kind of Arcane.."
+fit_content = true
+autowrap_mode = 0

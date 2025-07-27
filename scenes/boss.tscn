@@ -702,7 +702,7 @@ script = ExtResource("1_qnbj4")
 unique_name_in_owner = true
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_71rcx")
-animation = &"sp_atk"
+animation = &"dig_down"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
