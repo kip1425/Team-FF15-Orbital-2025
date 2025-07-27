@@ -43,11 +43,14 @@ func spawn_at_path(mob):
 func spawn_boss_mob():
 	var new_boss = preload("res://scenes/boss.tscn").instantiate()
 	var player_ui = get_node_or_null("/root/Game/PlayerUI")
+	var game_manager = %GameManager
 	new_boss.global_position = center_marker.global_position
 
 	if player_ui:
 		new_boss.connect("health_changed", Callable(player_ui, "_on_boss_health_changed"))
 		new_boss.connect("died", Callable(player_ui, "_on_boss_died"))
+		new_boss.connect("died", Callable(game_manager, "kill_boss"))
+		
 		player_ui.show_boss_bar("Nodle, the Cruel", new_boss.max_health)
 
 	add_child(new_boss)

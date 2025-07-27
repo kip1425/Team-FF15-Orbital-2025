@@ -30,8 +30,7 @@ var last_movement = Vector2.UP
 func _ready() -> void:
 	add_to_group("player")
 	facing_direction = Vector2.RIGHT
-	#attack()
-	#commented out fireball attrack for now
+	attack()
 
 # Nearby enemies
 var enemies_in_range := []
@@ -249,6 +248,7 @@ func upgrade_character(upgrade):
 		"food":
 			current_health += 20
 			clamp(current_health, 0, MAX_HEALTH)
+			update_health_bar()
 			
 	var upgrade_children = upgrade_options.get_children()
 	for child in upgrade_children:

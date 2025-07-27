@@ -46,7 +46,13 @@ func _on_intro_dialogue_finished():
 	get_tree().paused = false
 	start_wave()
 	
-	
+var boss_spawned = false
+var boss_killed = false
+var boss_wave_ended = false
+
+func kill_boss() -> void:
+	boss_killed = true
+
 func _process(delta):
 	if not player_ui_ready:
 		var player_ui = get_node_or_null("/root/Game/PlayerUI")
@@ -57,7 +63,15 @@ func _process(delta):
 		else:
 			return
 	
-	if in_wave:
+	if current_wave == 10 and not boss_spawned:
+		boss_spawned = true
+		get_node("/root/Game").spawn_boss_mob()
+	elif current_wave == 10 and not boss_killed:
+		return
+	elif current_wave == 10 and boss_killed and not boss_wave_ended:
+		boss_wave_ended = true
+		end_wave()
+	elif in_wave:
 		time_left -= delta
 		spawn_timer -= delta
 		
