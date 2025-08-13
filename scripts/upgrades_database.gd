@@ -114,5 +114,29 @@ const upgrades = {
 		"level": "N/A",
 		"prerequisite": [],
 		"type": "item"
+	}, 
+	"gun1": {
+		"icon": icon_path,
+		"name": "Gun",
+		"description": "Upgrades Anoop's gun",
+		"level": "Level 1",
+		"prerequisite": [],
+		"type": "attack",
+	},
+	"gun2": {
+		"icon": icon_path,
+		"name": "Gun",
+		"description": "Upgrades Anoop's gun",
+		"level": "Level 2",
+		"prerequisite": ["gun1"],
+		"type": "attack"
+	},
+	"gun3": {
+		"icon": icon_path,
+		"name": "Gun",
+		"description": "Upgrades Anoop's gun",
+		"level": "Level 3",
+		"prerequisite": ["gun2"],
+		"type": "attack"
 	}
 }

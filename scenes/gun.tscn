@@ -31,12 +31,10 @@ scale = Vector2(1.90808, 1.55826)
 [node name="Bullet" parent="WeaponPivot/PistolBasic" instance=ExtResource("3_gp1hk")]
 position = Vector2(29, -3)
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 0.3
-autostart = true
-
 [node name="ShootSFX" type="AudioStreamPlayer2D" parent="."]
 unique_name_in_owner = true
 stream = ExtResource("4_qd4js")
+
+[node name="Timer" type="Timer" parent="."]
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

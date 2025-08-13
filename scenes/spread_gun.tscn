@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cf8mlkhvvr04y"]
 
-[ext_resource type="Texture2D" uid="uid://bd18vdsjnct06" path="res://assets/pistol/spread_pistol.png" id="1_08dys"]
+[ext_resource type="Texture2D" uid="uid://bd18vdsjnct06" path="res://assets/pistol/gun2.png" id="1_08dys"]
 [ext_resource type="PackedScene" uid="uid://bq88whmieokpp" path="res://scenes/bullet.tscn" id="3_h53rb"]
 [ext_resource type="AudioStream" uid="uid://no1l61y11ss7" path="res://assets/sounds/hurt.wav" id="4_8ebjt"]
 

@@ -17,11 +17,10 @@ var finished_callback: Callable = Callable()
 func _ready():
 	self.visible = false
 	
-func start_dialogue(lines: Array, speaker_name: String = "", callback: Callable = Callable()):
+func start_dialogue(lines: Array, callback: Callable = Callable()):
 	dialogue_lines = lines
 	current_line_index = 0
 	finished_callback = callback
-	name_label.text = speaker_name
 	self.visible = true
 	_show_next_line()
 
@@ -53,7 +52,14 @@ func _show_next_line():
 		_end_dialogue()
 		return
 	
-	full_text = dialogue_lines[current_line_index]
+	var line_data = dialogue_lines[current_line_index]
+	if typeof(line_data) == TYPE_DICTIONARY:
+		name_label.text = line_data.get("speaker", "")
+		full_text = line_data.get("text", "")
+	else:
+		full_text = str(line_data)
+		name_label.text = ""
+	
 	char_index = 0
 	dialogue_text.text = ""
 	typing = true

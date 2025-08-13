@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bd18vdsjnct06"
-path="res://.godot/imported/spread_pistol.png-01ed2eb7adda36588f4191256f349c05.ctex"
+uid="uid://bp1thiad0guxg"
+path="res://.godot/imported/sword.png-38f09fbffd069273fffc13564e0bf873.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/pistol/spread_pistol.png"
-dest_files=["res://.godot/imported/spread_pistol.png-01ed2eb7adda36588f4191256f349c05.ctex"]
+source_file="res://assets/pistol/sword.png"
+dest_files=["res://.godot/imported/sword.png-38f09fbffd069273fffc13564e0bf873.ctex"]
 
 [params]
 

@@ -30,8 +30,7 @@ var last_movement = Vector2.UP
 func _ready() -> void:
 	add_to_group("player")
 	facing_direction = Vector2.RIGHT
-	#attack()
-	#commented out fireball attrack for now
+	attack()
 
 # Nearby enemies
 var enemies_in_range := []
@@ -44,6 +43,17 @@ func _physics_process(delta: float) -> void:
 	enemies_in_range = $EnemyDetectionArea.get_overlapping_bodies()
 	if enemies_in_range.size() > 0:
 		current_target = enemies_in_range.front()
+	else:
+		current_target = null
+	
+	if current_target and is_instance_valid(current_target):
+		GunNode.look_at(current_target.global_position)
+		
+	if gun_level > 0 and current_target and is_instance_valid(current_target):
+		gun_timer -= delta
+		if gun_timer <= 0:
+			shoot(current_target)
+			gun_timer = gun_fire_rate
 	
 	if roll_cooldown_timer > 0:
 		roll_cooldown_timer -= delta
@@ -68,7 +78,6 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("roll") and roll_cooldown_timer <= 0:
 		start_roll(input_vector)
 		return
-	
 		
 	if input_vector != Vector2.ZERO:
 		last_movement = before_normalize
@@ -246,9 +255,25 @@ func upgrade_character(upgrade):
 			armor += 1
 		"armor3", "armor4":
 			armor += 2
+		"gun1":
+			gun_level = 1
+			gun_fire_rate = 0.3
+			GunSprite.texture = load("res://assets/pistol/gun2.png")
+			GunSprite.scale = Vector2(0.2, 0.2)
+		"gun2":
+			gun_level = 2
+			gun_fire_rate = 0.2
+			GunSprite.texture = load("res://assets/pistol/gun3.png")
+			GunSprite.scale = Vector2(0.15, 0.15)
+		"gun3":
+			gun_level = 3
+			gun_fire_rate = 0.05
+			GunSprite.texture = load("res://assets/pistol/gun4.png")
+			GunSprite.scale = Vector2(0.13, 0.13)
 		"food":
 			current_health += 20
 			clamp(current_health, 0, MAX_HEALTH)
+			update_health_bar()
 			
 	var upgrade_children = upgrade_options.get_children()
 	for child in upgrade_children:
@@ -265,7 +290,6 @@ func upgrade_character(upgrade):
 	else:
 		level_up_active = false
 		attack()
-
 
 func level_up() -> void:
 	level_up_active = true
@@ -299,7 +323,6 @@ func attack() -> void:
 		while (num_of_swords < orbital_level):
 			num_of_swords += 1
 			$Attacks/ArtemisOrbital.add_child(sword.instantiate())
-	
 
 # Artemis Orbital
 var orbit_speed := 2.0
@@ -358,3 +381,21 @@ func _on_firewall_attack_timer_timeout() -> void:
 			FirewallAttackTimer.start()
 		else:
 			FirewallAttackTimer.stop()
+			
+var gun_level := 1
+var gun_fire_rate := 0.5  # seconds per shot
+var gun_timer := 0.0      # counts down for shooting
+
+@onready var GunNode = $Attacks/Gun
+@onready var ShootingPoint = $Attacks/Gun/WeaponPivot/PistolBasic/ShootingPoint
+@onready var ShootSFX = $Attacks/Gun/ShootSFX
+@onready var GunSprite: Sprite2D = $Attacks/Gun/WeaponPivot/PistolBasic
+const BULLET = preload("res://scenes/bullet.tscn")
+
+func shoot(target: Node2D) -> void:
+	var new_bullet = BULLET.instantiate()
+	$Attacks.add_child(new_bullet)  # ensures bullet is visible
+	new_bullet.global_position = ShootingPoint.global_position
+	new_bullet.look_at(target.global_position)
+	new_bullet.direction = Vector2.RIGHT.rotated(new_bullet.rotation)
+	ShootSFX.play()

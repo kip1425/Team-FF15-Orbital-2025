@@ -1,13 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://bupgwqnv0l1ui"]
+[gd_scene load_steps=5 format=3 uid="uid://bupgwqnv0l1ui"]
 
 [ext_resource type="Texture2D" uid="uid://dbeiy8diyrs8l" path="res://assets/attacks/fireball.png" id="1_kgspp"]
 [ext_resource type="Script" uid="uid://bpgksmnvd7x3y" path="res://scripts/attack_option.gd" id="1_op0tg"]
+[ext_resource type="FontFile" uid="uid://csxc63uh4whm4" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="3_2ktuo"]
+[ext_resource type="FontFile" uid="uid://r6f2kxo2kfmu" path="res://assets/fonts/PixelOperator8.ttf" id="4_m77qy"]
 
 [node name="ColorRect" type="ColorRect"]
 custom_minimum_size = Vector2(447, 100)
 offset_right = 447.0
 offset_bottom = 100.0
-color = Color(0.610099, 0.621293, 0.610408, 1)
+color = Color(0.172693, 0.178353, 0.172855, 1)
 script = ExtResource("1_op0tg")
 
 [node name="TextureRect" type="ColorRect" parent="."]
@@ -29,19 +31,21 @@ texture = ExtResource("1_kgspp")
 [node name="Name" type="Label" parent="."]
 layout_mode = 0
 offset_left = 89.0
-offset_top = 1.0
-offset_right = 304.0
-offset_bottom = 35.0
-theme_override_font_sizes/font_size = 24
+offset_top = 11.0
+offset_right = 309.0
+offset_bottom = 45.0
+theme_override_fonts/font = ExtResource("3_2ktuo")
+theme_override_font_sizes/font_size = 15
 text = "Firewall Peppering"
 
 [node name="Level" type="Label" parent="."]
 layout_mode = 0
-offset_left = 347.0
-offset_top = 1.0
-offset_right = 440.0
-offset_bottom = 35.0
-theme_override_font_sizes/font_size = 24
+offset_left = 348.0
+offset_top = 12.0
+offset_right = 441.0
+offset_bottom = 46.0
+theme_override_fonts/font = ExtResource("4_m77qy")
+theme_override_font_sizes/font_size = 14
 text = "Level : 1"
 
 [node name="Description" type="Label" parent="."]
@@ -50,6 +54,7 @@ offset_left = 91.0
 offset_top = 37.0
 offset_right = 433.0
 offset_bottom = 60.0
+theme_override_fonts/font = ExtResource("4_m77qy")
 text = "Increase attack damage"
 autowrap_mode = 3
 

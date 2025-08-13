@@ -10,14 +10,22 @@ func _ready() -> void:
 @onready var center_marker = $BossSpawn
 var paused = false
 
-func spawn_random_mob():
-	var rand = randi() % 4
-	match rand:
-		0: spawn_mob()
-		1: spawn_ranged_mob()
-		2: spawn_exploder_mob()
-		3: spawn_splitter_mob()
-
+func spawn_random_mob(enemy_type: String = ""):
+	if enemy_type == "":
+		var rand = randi() % 3
+		match rand:
+			0: spawn_mob()
+			1: spawn_ranged_mob()
+			2: spawn_splitter_mob()
+	else:
+		match enemy_type:
+			"melee":
+				spawn_mob()
+			"ranged":
+				spawn_ranged_mob()
+			"splitter":
+				spawn_splitter_mob()
+	
 # Called when the node enters the scene tree for the first time.
 func spawn_mob():
 	var new_mob = preload("res://scenes/mob.tscn").instantiate()
@@ -48,9 +56,16 @@ func spawn_boss_mob():
 	if player_ui:
 		new_boss.connect("health_changed", Callable(player_ui, "_on_boss_health_changed"))
 		new_boss.connect("died", Callable(player_ui, "_on_boss_died"))
+		
+		var gm = get_node("/root/Game/GameManager")
+		if gm:
+			print("signal connected!!!")
+			new_boss.connect("died", Callable(gm, "_on_boss_defeated"))
+			
 		player_ui.show_boss_bar("Nodle, the Cruel", new_boss.max_health)
-
+		
 	add_child(new_boss)
+	return new_boss
 	
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause"):

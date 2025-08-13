@@ -15,7 +15,7 @@ enum STATE {
 
 var current_state = STATE.IDLE
 
-var max_health = 100
+var max_health = 20
 
 var health: int = max_health
 var is_dead = false
@@ -229,6 +229,7 @@ func _spawn_minions_random(min_count: int = 5, max_count: int = 10) -> void:
 		var offset = Vector2.RIGHT.rotated(randf() * TAU) * randf_range(40, 80)
 		minion.global_position = global_position + offset
 		get_parent().add_child(minion)
+		minion.add_to_group("enemies")
 
 signal health_changed(current: int, max: int)
 signal died
@@ -240,7 +241,6 @@ func take_damage(damage: int) -> void:
 	emit_signal("health_changed", health, max_health)
 	if health <= 0:
 		is_dead = true
-		emit_signal("died")
 		change_state(STATE.DIE)  
 
 func _on_state_timer_timeout() -> void:
@@ -270,10 +270,10 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 	if current_state == STATE.SPECIAL:
 		change_state(STATE.IDLE)
 	elif current_state == STATE.DIE:
+		emit_signal("died")
 		queue_free()
 
 func _on_animated_sprite_2d_frame_changed() -> void:
 	if current_state == STATE.SPECIAL and anim.frame == 5 and not special_fired:
 		fire_projectile_burst()
 		special_fired = true
-	

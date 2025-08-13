@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://d0qj12vt18la7"]
+[gd_scene load_steps=51 format=3 uid="uid://d0qj12vt18la7"]
 
 [ext_resource type="Texture2D" uid="uid://ck20xuhq111tu" path="res://assets/sprites/knight.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://es6ttu4gxdh7" path="res://scripts/player.gd" id="1_g2els"]
@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://bqla0qsluke6i" path="res://assets/sounds/tap.wav" id="5_qlg0r"]
 [ext_resource type="Script" uid="uid://iiblclctul63" path="res://scripts/attacks/artemis_orbital.gd" id="5_smehm"]
 [ext_resource type="AudioStream" uid="uid://uhtko0avedv7" path="res://assets/sounds/level up.mp3" id="6_tuyoq"]
+[ext_resource type="FontFile" uid="uid://csxc63uh4whm4" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="7_smehm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_md1ol"]
 atlas = ExtResource("1_3vyb7")
@@ -301,6 +302,7 @@ radius = 58.0775
 radius = 14.8661
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tuyoq"]
+bg_color = Color(0.0760232, 0.064863, 0.0221455, 1)
 
 [node name="Player" type="CharacterBody2D"]
 z_index = 5
@@ -389,6 +391,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_tuyoq")
 layout_mode = 0
 offset_right = 505.0
 offset_bottom = 100.0
+theme_override_fonts/normal_font = ExtResource("7_smehm")
 theme_override_font_sizes/normal_font_size = 30
 text = "Level Up!"
 horizontal_alignment = 1
