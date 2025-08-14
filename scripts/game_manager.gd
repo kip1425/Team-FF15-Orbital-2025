@@ -1,6 +1,6 @@
 extends Node
 
-@export var wave_duration := 5.0
+@export var wave_duration := 30.0
 @export var enemies_per_wave := 10
 @export var spawn_interval_min = 0.5
 @export var spawn_interval_max = 2.0
@@ -173,7 +173,7 @@ func start_wave():
 	wave_started.emit(current_wave)
 	update_timer_label()
 
-	if current_wave == 2:  # boss wave
+	if current_wave == 11:  # boss wave
 		is_boss_wave = true
 		_start_boss_cutscene()
 	else:
