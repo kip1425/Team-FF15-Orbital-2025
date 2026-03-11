@@ -13,8 +13,8 @@ var intro_playing = true
 
 var enemy_types_per_wave = {
 	1: ["melee"],
-	3: ["melee", "ranged"],
-	6: ["melee", "ranged", "splitter"]
+	4: ["melee", "ranged"],
+	7: ["melee", "ranged", "splitter"]
 }
 
 signal wave_started(wave_number: int)
@@ -165,15 +165,27 @@ func _on_boss_dialogue_finished():
 	
 func start_wave():
 	in_wave = true
-	time_left = wave_duration
 	enemies_spawned = 0
 	spawn_timer = 0.0
 	boss_node = null
 
+	if current_wave <= 3:
+		enemies_per_wave = 15 + current_wave * 5   # 20, 25, 30
+	else:
+		var base = 28
+		var growth = 1.15   # gentler scaling
+		enemies_per_wave = min(100, int(base * pow(growth, current_wave - 3)))
+
+	wave_duration = 30.0
+	time_left = wave_duration
+
+	spawn_interval_min = 30.0 / float(enemies_per_wave * 1.2)
+	spawn_interval_max = 30.0 / float(enemies_per_wave * 0.7)
+
 	wave_started.emit(current_wave)
 	update_timer_label()
 
-	if current_wave == 11:  # boss wave
+	if current_wave == 10:  # boss wave
 		is_boss_wave = true
 		_start_boss_cutscene()
 	else:

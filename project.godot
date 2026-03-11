@@ -20,6 +20,10 @@ config/icon="res://icon.svg"
 Music="*res://scenes/music.tscn"
 UpgradesDatabase="*res://scenes/upgrades_database.tscn"
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [input]
 
 moveup={

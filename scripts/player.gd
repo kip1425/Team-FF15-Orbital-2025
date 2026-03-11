@@ -182,7 +182,6 @@ func calculate_experience(coin_exp: int) -> void:
 	if experience_bar: # Update exp bar
 		experience_bar.max_value = experience_needed
 		experience_bar.value = experience
-	
 
 func calculate_experiencecap() -> int:
 	var exp_cap = experience_level
@@ -201,26 +200,43 @@ func calculate_experiencecap() -> int:
 @onready var attack_option := preload("res://scenes/attack_option.tscn")
 @onready var level_up_sound : AudioStreamPlayer2D = $LevelUpCanvas/LevelUpPanel/LevelUpSound
 
+var upgrade_level_requirements := {
+	"gun1": 8,
+	"gun2": 14,
+	"gun3": 21
+}
 var possible_upgrades = {}
 var collected_upgrades = {}
 
 func get_random_upgrade():
 	var db = []
 	for upgrade in UpgradesDatabase.upgrades:
+		# skip if already collected or pending
 		if collected_upgrades.has(upgrade):
-			pass
+			continue
 		elif possible_upgrades.has(upgrade):
-			pass
+			continue
 		elif UpgradesDatabase.upgrades[upgrade]["type"] == "item":
-			pass
-		elif UpgradesDatabase.upgrades[upgrade]["prerequisite"].size() > 0:
+			continue
+		
+		# check prerequisites
+		if UpgradesDatabase.upgrades[upgrade]["prerequisite"].size() > 0:
+			var prereqs_met = true
 			for prereq in UpgradesDatabase.upgrades[upgrade]["prerequisite"]:
 				if not collected_upgrades.has(prereq):
-					pass
-				else:
-					db.append(upgrade)
-		else:
-			db.append(upgrade)
+					prereqs_met = false
+					break
+			if not prereqs_met:
+				continue
+		
+		# check level requirement
+		if upgrade_level_requirements.has(upgrade):
+			if experience_level < upgrade_level_requirements[upgrade]:
+				continue
+		
+		# if all conditions pass, allow upgrade
+		db.append(upgrade)
+	
 	if db.size() > 0:
 		var random_item = db.pick_random()
 		possible_upgrades.set(random_item, true)
@@ -257,12 +273,12 @@ func upgrade_character(upgrade):
 			armor += 2
 		"gun1":
 			gun_level = 1
-			gun_fire_rate = 0.3
+			gun_fire_rate = 0.30
 			GunSprite.texture = load("res://assets/pistol/gun2.png")
 			GunSprite.scale = Vector2(0.2, 0.2)
 		"gun2":
 			gun_level = 2
-			gun_fire_rate = 0.2
+			gun_fire_rate = 0.20
 			GunSprite.texture = load("res://assets/pistol/gun3.png")
 			GunSprite.scale = Vector2(0.15, 0.15)
 		"gun3":
@@ -271,7 +287,7 @@ func upgrade_character(upgrade):
 			GunSprite.texture = load("res://assets/pistol/gun4.png")
 			GunSprite.scale = Vector2(0.13, 0.13)
 		"food":
-			current_health += 20
+			current_health += 60
 			clamp(current_health, 0, MAX_HEALTH)
 			update_health_bar()
 			

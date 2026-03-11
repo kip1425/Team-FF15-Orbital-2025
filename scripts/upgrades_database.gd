@@ -110,7 +110,7 @@ const upgrades = {
 	"food": {
 		"icon": icon_path + "food.png",
 		"name": "Food",
-		"description": "Heals Anoop for 20 health.",
+		"description": "Heals Anoop for 60 health.",
 		"level": "N/A",
 		"prerequisite": [],
 		"type": "item"
